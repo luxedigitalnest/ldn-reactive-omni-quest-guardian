@@ -1,0 +1,35 @@
+name: Reactive Omni Solidity CI
+
+on:
+  push:
+    paths:
+      - "src/**"
+      - "test/**"
+      - "foundry.toml"
+      - ".github/workflows/omni-solidity-ci.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  forge-build-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+      - name: Fetch the official Omni library (pinned release)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --depth 1 --branch v0.1.0 https://github.com/Reactive-Network/reactive-lib-omni.git lib/reactive-lib-omni
+          test "$(git -C lib/reactive-lib-omni rev-parse HEAD)" = "3ade0dcf1d27e67e5783ef807e73a1b9e0c0cce8"
+      - name: Compile Solidity 0.8.29 contracts
+        run: forge build
+      - name: Execute local origin and callback tests
+        run: forge test -vv
