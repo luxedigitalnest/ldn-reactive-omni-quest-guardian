@@ -60,6 +60,10 @@ contract QuestGuardianReactive is AbstractReactive {
         if (log_.data.length != 32) return;
 
         uint256 taskId = log_.topic1;
+        // Indexed EVM address is zero-padded on the left. Reject malformed
+        // high bits before narrowing the 256-bit topic to an address.
+        if (log_.topic2 >> 160 != 0) return;
+        // forge-lint: disable-next-line(unsafe-typecast)
         address creator = address(uint160(log_.topic2));
         uint64 deadline = abi.decode(log_.data, (uint64));
         if (taskId == 0 || creator == address(0) || deadline == 0) return;
@@ -76,6 +80,10 @@ contract QuestGuardianReactive is AbstractReactive {
             "onCheckpoint(address,uint256,address,uint64)",
             address(0), taskId, creator, deadline
         );
+        // Effects and event are applied before the external system call.
+        // If the system rejects the request, the whole transaction rolls back.
+        unchecked { requestsMade++; }
+        emit CallbackRequested(originLogId, taskId, creator);
         SYSTEM.requestCallbackV_1_0(
             ISystemContract.CallbackConfiguration_V_1_0({
                 chainId: destinationChainId,
@@ -84,8 +92,6 @@ contract QuestGuardianReactive is AbstractReactive {
                 payload: payload
             })
         );
-        unchecked { requestsMade++; }
-        emit CallbackRequested(originLogId, taskId, creator);
     }
 
     /// @dev Reactive network reserves/tops up this contract in native Lasna test REACT.
