@@ -80,3 +80,15 @@ Deployment order with **Ethereum Sepolia on BOTH origin and destination** (the o
 6. Verify **three authentic chain-linked receipts**, destination `checkpointSeen(taskId)==true`, and callback evidence before recording a demo under 3 minutes and submitting the original DoraHacks build.
 
 As of 22 Nov 2026 the real wallet's Lasna balance is **0**; the only confirmed new DoraHacks action is **event registration**, not judged project submission.
+
+## Verified offline unsigned deployment transaction drafts (22 Nov 2026)
+
+The new original [unsigned deployment helper](scripts/unsigned_deploy_plan.js) eliminates manual constructor ABI encoding, without touching or unlocking a wallet. It reads locally compiled, pinned Solc artifacts, verifies the manifest compiler/library commit and **SHA-256 bytecode hash**, and returns the exact unsigned constructor DATA for two intended Sepolia contract-create transactions:
+
+- **QuestOrigin** on Sepolia chain 11155111, zero value, no constructor inputs.
+- **QuestDestination** on Sepolia chain 11155111, with the official Sepolia callback proxy `0xc9f36411C9897e7F959D99ffca2a0Ba7ee0D7bDA` ABI-encoded.
+- **QuestGuardianReactive** on Lasna chain 5318007 is output only **after** both real Sepolia deployed contract addresses are provided. It uses both exact addresses and the origin/destination chain IDs; unknown addresses are never invented.
+
+Run: `npm run compile && npm run test:unsigned && npm run unsigned-plan`. After both genuine Sepolia explorer receipts exist, `node scripts/unsigned_deploy_plan.js --origin REAL_ORIGIN_ADDRESS --destination REAL_DESTINATION_ADDRESS` prepares the Lasna constructor, still without a signature.
+
+**Tests:** eleven dedicated offline Node.js tests verify pinned hashes, constructor encoding, correct networks, expected bytecode length and refusal of missing, duplicate, malformed or invented addresses. Neither these drafts nor the original Foundry tests are proof of a live deployed contract. Wallet transactions must be explicitly reviewed and approved by the owner in their real wallet UI. The helper intentionally omits nonce, real gas, a signature, a transaction hash and final contracts until the corresponding network receipts exist. **No RPC is called and nothing is broadcast.** Do not send mainnet funds or share seed phrases.

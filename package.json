@@ -4,7 +4,9 @@
   "version": "0.1.0",
   "description": "No-key reproducible Solidity compiler for the Reactive Omni demo. Does not deploy or sign.",
   "scripts": {
-    "compile": "node scripts/compile_artifacts.js"
+    "compile": "node scripts/compile_artifacts.js",
+    "test:unsigned": "node --test tests/unsigned_deploy_plan.test.js",
+    "unsigned-plan": "node scripts/unsigned_deploy_plan.js"
   },
   "dependencies": {
     "solc": "0.8.29"
