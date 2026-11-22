@@ -1,6 +1,6 @@
 # LDN Reactive Omni Quest Guardian
 
-**Status (22 November 2026): Original contracts are deployed on Ethereum Sepolia and Reactive Lasna, with independently verified receipts. The Guardian issued two genuine CallbackRequested events. Sepolia Destination was funded through the official callback proxy, but the final destination callback and judged DoraHacks submission are NOT yet verified.** See [live on-chain evidence](LIVE_ONCHAIN_PROOFS_2026-11-22.md).
+**Status (22 November 2026): LIVE, VERIFIED end-to-end cross-chain V2 demo on Ethereum Sepolia and Reactive Lasna: source checkpoint #4 -> real Lasna CallbackRequested -> successful Sepolia destination callback. Independent RPC checks verify `checkpointSeen(4) == true` and the destination `CheckpointMirrored(4)` event. Final judged DoraHacks submission and any award are NOT yet complete.** See [full on-chain evidence](LIVE_ONCHAIN_PROOFS_2026-11-22.md).
 
 An original open-source, accessibility-oriented checkpoint automation experiment for [Reactive Omni Buildathon](https://dorahacks.io/hackathon/reactive-omni-buildathon) (deadline 5 December 2026), proposed for **Set It and Forget It**.
 
@@ -29,7 +29,7 @@ Use Foundry and Solidity 0.8.29.
 3. Run **forge build** and **forge test -vv**.
 4. Compare with the public GitHub Actions workflow in .github/workflows/omni-solidity-ci.yml.
 
-## Original deployment checklist — contracts deployed, callback delivery outstanding
+## Original deployment checklist — V1 failed, corrected V2 delivered
 
 1. Verified **Ethereum Sepolia** for both original origin and destination (chain ID 11155111), with official Sepolia callback proxy from the [supported-chains guide](https://dev.reactive.network/origins-and-destinations). All tests use free testnet assets.
 2. Deploy QuestOrigin and QuestDestination to origin/destination using official testnet RPC. Configure destination callback proxy in its constructor.
@@ -39,14 +39,14 @@ Use Foundry and Solidity 0.8.29.
 6. Call announce on origin. Collect three genuine linked explorer proofs: origin event TX, Reactive TX/callback request, and destination callback TX. Verify checkpointSeen(taskId) on destination.
 7. Produce an original video under three minutes and enter the **actual** addresses, public repository and transaction hashes in DoraHacks before Dec 5.
 
-**Without real on-chain callbacks, the organizer explicitly will not score the submission. Do not submit a concept entry or fabricate receipts.**
+**A genuine end-to-end V2 callback is now independently verified. The final buildathon BUIDL, original video, and judging remain outstanding. Do not fabricate receipts, awards, or a submitted entry.**
 
 ## Limitations and risks
 
 - An announced checkpoint is not an off-chain quest-completion credential. Real-world task attestation would need a trustworthy issuer.
 - The event exposes public task metadata; this is not an anonymity system. Do not store identifying data in real events.
 - The destination uses taskId as its replay key; production multi-origin deployments must bind origin/chain identity too.
-- Reactive gas and callback reserves have separate costs; a lack of funds can halt the on-chain flow. The original contracts are deployed on testnets, but a successful destination callback and independent security audit remain outstanding.
+- Reactive gas and callback reserves have separate costs; a lack of funds can halt the on-chain flow. A V2 end-to-end callback on the testnets was verified, but independent production security auditing remains outstanding.
 - Not a financial product or a promised grant.
 
 ## Official references
@@ -92,3 +92,19 @@ The new original [unsigned deployment helper](scripts/unsigned_deploy_plan.js) e
 Run: `npm run compile && npm run test:unsigned && npm run unsigned-plan`. After both genuine Sepolia explorer receipts exist, `node scripts/unsigned_deploy_plan.js --origin REAL_ORIGIN_ADDRESS --destination REAL_DESTINATION_ADDRESS` prepares the Lasna constructor, still without a signature.
 
 **Tests:** eleven dedicated offline Node.js tests verify pinned hashes, constructor encoding, correct networks, expected bytecode length and refusal of missing, duplicate, malformed or invented addresses. Neither these drafts nor the original Foundry tests are proof of a live deployed contract. Wallet transactions must be explicitly reviewed and approved by the owner in their real wallet UI. The helper intentionally omits nonce, real gas, a signature, a transaction hash and final contracts until the corresponding network receipts exist. **No RPC is called and nothing is broadcast.** Do not send mainnet funds or share seed phrases.
+
+## Live V2 success — transaction walkthrough
+
+The corrected version has an independently verified end-to-end task #4 flow:
+
+1. [Source event on Ethereum Sepolia](https://sepolia.etherscan.io/tx/0xa9c3b35da1ca6e644aec5c8173015a192968cae0e616a296c66284dad1e0bea2) — `CheckpointAnnounced(4)`, block 12189751, from the original QuestOrigin `0xa604534b1c0e9ca8a855569042a0582576b2e7bc`.
+2. [Original Reactive V2 contract processes it on Lasna](https://lasna.reactscan.net/tx/0xdd2e4ad174471e0e7a4764ac857eabebc33f3bb35b71a3aa977dab6a27ff8515) — `CallbackRequested(4)`, block 8985935, from the new Guardian `0xf9dd6d01f26f1c1f8f4fde7c42969d0c92016a6b`, `requestsMade() = 1`.
+3. [Correct Sepolia callback proxy delivers to V2 Destination](https://sepolia.etherscan.io/tx/0xc4080d7429e952f0164d8b3dd4877df23c740e8fa402779fb52d753e33b3b138) — status **SUCCESS**, block 12189752, live `CheckpointMirrored(4)` log emitted by new Destination `0x348aaec876dc199ca893f197ac8bb99b2d1a609a`, and `checkpointSeen(4) == true`.
+
+All three transactions are real public blockchain testnet evidence. See [full independent RPC checks](LIVE_ONCHAIN_PROOFS_2026-11-22.md), and [GitHub Actions Solidity build/tests](https://github.com/luxedigitalnest/ldn-reactive-omni-quest-guardian/actions/runs/45040324902).
+
+**Deployment comparison:** the original V1 callback FAILED because it hard-coded an outdated Sepolia proxy and omitted the official inherited payer; the corrected V2 uses current proxy `0xAa14d9Cd0f788Ca23d11805986C1d8bd035D23b4` and an `800000` callback gas limit. Never assume a successful callback from a local mock or a source event alone.
+
+**Run the owner's no-custody local demo UI:** `npm ci --ignore-scripts && npm run compile && npm run compile:v2 && node deploy-ui/server.mjs`, then open `http://127.0.0.1:4177/v2.html` on the owner's computer with trusted MetaMask. The app only serves an allowlist on localhost, validates exact pinned compiled bytecode SHA-256, restricts account and testnet, and requires owner action in MetaMask for every transaction. Transaction hashes are retained in browser localStorage to avoid duplicate sends. **Do not deploy again** if you already have proof addresses; receipt evidence is in this repository. No real ETH or private key is needed.
+
+The prototype is not audited, does not assert human real-world task completion, and has no confirmed grant payment. **Next organizer deliverables:** original demo video and final existing-account DoraHacks BUIDL before 5 December 2026.

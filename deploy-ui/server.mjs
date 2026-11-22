@@ -7,6 +7,12 @@ const paths=new Map([
  ["/",["index.html","text/html;charset=utf-8",here]],
  ["/index.html",["index.html","text/html;charset=utf-8",here]],
  ["/app.mjs",["app.mjs","text/javascript;charset=utf-8",here]],
+ ["/v2.html",["v2.html","text/html;charset=utf-8",here]],
+ ["/v2.mjs",["v2.mjs","text/javascript;charset=utf-8",here]],
+ ["/artifacts/v2/manifest.json",["manifest.json","application/json;charset=utf-8",join(parent,"artifacts","v2")]],
+ ...["QuestOrigin","QuestDestinationV2","QuestGuardianReactiveV2"].map(x=>[
+  "/artifacts/v2/"+x+".json",[x+".json","application/json;charset=utf-8",join(parent,"artifacts","v2")]
+ ]),
  ["/artifacts/manifest.json",["manifest.json","application/json;charset=utf-8",join(parent,"artifacts")]],
  ...["QuestOrigin","QuestDestination","QuestGuardianReactive"].map(x=>[
   "/artifacts/"+x+".json",[x+".json","application/json;charset=utf-8",join(parent,"artifacts")]

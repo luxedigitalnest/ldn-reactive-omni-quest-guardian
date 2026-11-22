@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LDN Reactive Omni V2 — Current Callback Proxy</title>
+<style>
+:root{color-scheme:dark;--bg:#111b28;--bg2:#202f40;--line:#41566d;--text:#eff6ff;--muted:#aac2db;--accent:#7de1ae;--warn:#f9d17d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text)}
+header,main,footer{max-width:1120px;margin:0 auto;padding:20px 24px}header{padding-top:38px}h1{font-size:clamp(1.6rem,3.8vw,2.4rem);line-height:1.18;margin:0 0 10px}h2{font-size:1.24rem}p{margin:6px 0 14px}.sub{color:var(--muted)}
+small{color:var(--muted)}strong{font-weight:700}a{color:#98dbff;overflow-wrap:anywhere}
+.banner{border-left:5px solid var(--accent);background:var(--bg2);padding:14px 18px;border-radius:6px;margin:18px 0}
+.card{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:22px;margin:16px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:16px}.grid .card{margin:0}
+button{display:inline-block;margin:5px 8px 6px 0;border:0;border-radius:9px;background:var(--accent);padding:13px 18px;color:#10271d;font:700 15px system-ui;cursor:pointer}
+button.secondary{background:#344c64;color:var(--text);border:1px solid #55728d}
+button:disabled{cursor:not-allowed;opacity:.42}
+input,select{background:#192838;color:var(--text);border:1px solid #7491a5;border-radius:7px;padding:11px;font:inherit}
+label{display:block;margin:8px 0}#status{white-space:pre-wrap;overflow-wrap:anywhere;background:#0c1620;border:1px solid #40546a;padding:14px;border-radius:8px;min-height:58px}
+.code{font-family:ui-monospace,Consolas,monospace;word-break:break-all}#proofs{white-space:pre-wrap;overflow-wrap:anywhere}
+.notice{color:var(--warn)}.ok{color:var(--accent)}ol{padding-left:22px}
+@media(max-width:600px){header,main{padding:16px}.card{padding:16px}}
+</style>
+</head>
+<body>
+<header>
+<div class="sub">LUXEDIGITALNEST • REACTIVE OMNI BUILDATHON • TESTNET ONLY</div>
+<h1>Quest Guardian V2 — Corrected callback delivery</h1>
+<p class="sub">Original source from <a href="https://github.com/luxedigitalnest/ldn-reactive-omni-quest-guardian" target="_blank" rel="noopener">LuxeDigitalNest GitHub</a>. This page runs only on your local computer and uses the existing installed MetaMask. It never handles recovery phrases.</p>
+<div class="banner"><strong>No automatic signing.</strong> Each action below requires a deliberate click, and each on-chain transaction requires your separate confirmation inside MetaMask. Check network, destination, amount and gas before confirming. Never switch to Ethereum Mainnet.</div>
+</header>
+<main>
+<section class="card">
+<h2>Wallet / safety verification</h2>
+<p id="wallet" class="sub">Checking installed wallet without requesting access…</p>
+<button id="connect">Connect existing MetaMask</button>
+<button class="secondary" id="reauthorize">Re-authorize this testnet account</button>
+<button class="secondary" id="disconnect">Disconnect ONLY this local site</button>
+<button class="secondary" id="sep">Switch to Sepolia testnet</button>
+<button class="secondary" id="lasna">Switch / add Reactive Lasna testnet</button>
+<button class="secondary" id="refresh">Refresh and verify receipts</button>
+</section>
+<div class="grid">
+<section class="card">
+<h2>1. Reuse verified Sepolia Origin — no redeployment</h2>
+<p>The existing QuestOrigin (Sepolia chain 11155111) was independently deployed and verified at <code>0xa604534b1c0e9ca8a855569042a0582576b2e7bc</code>. This step is locked to prevent duplicating the original deployment.</p>
+<button id="origin" disabled>Origin already verified — no transaction</button>
+<p id="originStatus" class="sub">No verified deployment address yet</p>
+</section>
+<section class="card">
+<h2>2. Deploy corrected Sepolia Destination V2</h2>
+<p><strong>QuestDestinationV2.sol</strong> uses the current live Sepolia callback proxy <code>0xAa14d9Cd0f788Ca23d11805986C1d8bd035D23b4</code> from Reactive MCP, and inherits the pinned official payer interface. The old deployed destination used a legacy proxy and is NOT reused.</p>
+<button id="destination">Prepare owner-approved Destination deployment</button>
+<p id="destinationStatus" class="sub">No verified deployment address yet</p>
+</section>
+<section class="card">
+<h2>3. Deploy corrected Lasna Reactive Guardian V2</h2>
+<p>Available only after the <strong>new Destination V2</strong> receipt. Reuses the original Origin and sets callback gas to <strong>800,000</strong> to cover proxy overhead. Reactive Lasna chain 5318007, using test lREACT.</p>
+<label>Initial Reactive contract reserve (test lREACT)
+<select id="reserve"><option value="0">0 (may fail callback)</option><option value="0.1">0.1</option><option value="0.5" selected>0.5</option><option value="1">1.0</option></select></label>
+<button id="guardian">Prepare owner-approved Lasna Guardian deployment</button>
+<p id="guardianStatus" class="sub">Requires Sepolia Origin and Destination receipts</p>
+</section>
+<section class="card">
+<h2>4. Authorize Guardian on Sepolia</h2>
+<p>Owner-only <span class="code">setReactiveOnce(address)</span>. <span class="notice">Irreversible binding:</span> review the actual verified Lasna Guardian address in your wallet before confirming.</p>
+<button id="authorize">Prepare one-time authorization</button>
+<p id="authorizeStatus" class="sub">Not authorized</p>
+</section>
+<section class="card">
+<h2>4a. Fund destination callback reserve (Sepolia test ETH only)</h2>
+<p>The verified Sepolia callback proxy reports <strong>0 reserves</strong> for the original destination. Use its official <span class="code">depositTo(address)</span> route, NOT a direct transfer, to credit the contract's callback fee reserve. No mainnet ETH.</p>
+<p><strong>0.1 SepoliaETH</strong> test tokens. This is a separate wallet-approved contract call, not a claim or payout.</p>
+<button id="fundDestination">Prepare proxy reserve deposit (owner confirms in MetaMask)</button>
+<p id="fundStatus" class="sub">No funded callback reserve verified yet</p>
+</section>
+<section class="card">
+<h2>5. Announce genuine test checkpoint</h2>
+<p>Calls <span class="code">QuestOrigin.announce(uint64)</span> with a deadline 60 minutes into the future and records its emitted event proof. This does not attest off-chain completion.</p>
+<button id="announce">Prepare checkpoint announcement</button>
+<p id="announceStatus" class="sub">No genuine test event yet</p>
+</section>
+<section class="card">
+<h2>5a. One new checkpoint after funding (only if older callbacks remain undelivered)</h2>
+<p>Two original requests were emitted <strong>before</strong> destination reserves were funded. If the proxy still has no recorded delivery, this sends exactly one new original event under a <strong>new task ID</strong>, with all previous proofs preserved. It requires your separate wallet confirmation. Do not spam repeated events.</p>
+<button id="postFunding">Prepare ONE post-funding test event</button>
+<p id="postFundingStatus" class="sub">Not attempted; zero duplicate transactions</p>
+</section>
+<section class="card">
+<h2>6. Verify cross-chain callback</h2>
+<p>Reads Sepolia destination <span class="code">checkpointSeen(taskId)</span> only. <strong>Do not claim a successful Reactive callback</strong> until the real on-chain value is true and all receipts are independently verified.</p>
+<button id="verify">Check callback (read only)</button>
+<p id="verifyStatus" class="sub">Awaiting actual event / callback</p>
+</section>
+</div>
+<section class="card">
+<h2>Live evidence / transaction status</h2>
+<pre id="status" role="status" aria-live="polite">Preparing unsigned artifacts…</pre>
+<h3>Public receipts (local browser only)</h3><div id="proofs" class="code sub">No recorded transaction hashes.</div>
+<button id="copyProof" class="secondary">Copy public proof JSON</button>
+</section>
+<section class="card">
+<h2>Important limits</h2>
+<ol>
+<li>Compilation, unit tests and an unsigned draft are not deployments. Wait for success receipts and deployed bytecode.</li>
+<li>Check the connected account is the original public wallet and each network is testnet; change networks only through wallet-owned prompts.</li>
+<li>Actual Reactive callback may need extra destination proxy gas reserve. If it fails, use official debugging and record the receipt.</li>
+<li>No mainnet assets, wallet private keys, seed phrases, real-money trading or fabricated rewards are required.</li>
+<li>The organizer needs a genuine source event, Reactive processing and destination callback evidence, plus an original short demo and final DoraHacks entry by December 5.</li>
+</ol>
+<p><a href="https://dev.reactive.network/origins-and-destinations" target="_blank" rel="noopener">Official supported chains/callback proxy</a> · <a href="https://dev.reactive.network/reactive-mainnet" target="_blank" rel="noopener">Official Lasna faucet and network setup</a></p>
+</section>
+</main><footer><small>Local-only wallet workflow. Public receipts are saved in this browser profile; review them before any repeated transaction.</small></footer>
+<script src="/v2.mjs" type="module"></script>
+</body></html>
