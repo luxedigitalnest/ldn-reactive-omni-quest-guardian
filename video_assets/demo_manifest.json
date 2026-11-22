@@ -1,0 +1,32 @@
+{
+  "durationEstimate": 164.688,
+  "scenes": [
+    [
+      "00-intro",
+      24.648
+    ],
+    [
+      "01-code",
+      28.272
+    ],
+    [
+      "02-origin",
+      26.279999999999998
+    ],
+    [
+      "03-lasna",
+      27.215999999999998
+    ],
+    [
+      "04-callback",
+      28.128
+    ],
+    [
+      "05-outro",
+      30.144
+    ]
+  ],
+  "voice": "en-GB-RyanNeural",
+  "sources": "Original browser captures of GitHub, Blockscout and Reactscan; all links verifiable",
+  "note": "Original narrated proof walkthrough, testnet only, no automated wallet actions"
+}

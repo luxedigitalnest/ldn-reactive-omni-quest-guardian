@@ -58,7 +58,9 @@ Use Foundry and Solidity 0.8.29.
 
 Apache-2.0 licensed. See LICENSE.
 
-## Reproducible unsigned deployment artifacts and executed testnet steps (22 Nov 2026)
+## Historical V1 unsigned deployment artifacts (do not deploy V1 again)
+
+This section records the original **unsuccessful V1 preflight**. The older callback proxy below is obsolete for our live Lasna/Sepolia V2 demonstration; the current working proxy, V2 contract addresses, and genuine receipts are documented under *Live V2 success*.
 
 A separate local no-key compilation path is now available in `scripts/compile_artifacts.js`, pinning `solc@0.8.29` and verifying that official `lib/reactive-lib-omni` checkout is exactly `3ade0dcf1d27e67e5783ef807e73a1b9e0c0cce8`.
 
@@ -79,7 +81,7 @@ Deployment order with **Ethereum Sepolia on BOTH origin and destination** (the o
 5. On Sepolia, call `QuestDestination.setReactiveOnce(<actual-reactive>)` carefully (one-time binding). Then call `QuestOrigin.announce(<future-UTC-timestamp>)`.
 6. Verify **three authentic chain-linked receipts**, destination `checkpointSeen(taskId)==true`, and callback evidence before recording a demo under 3 minutes and submitting the original DoraHacks build.
 
-As of 22 Nov 2026 the real wallet's Lasna balance is **0**; the only confirmed new DoraHacks action is **event registration**, not judged project submission.
+**Historical preflight note:** On the morning of 22 Nov 2026, Lasna initially held zero test REACT. A subsequent genuine owner-approved faucet transaction funded Lasna, V2 contracts were deployed, and callback checkpoint #4 was verified. The judged DoraHacks submission remains separate from blockchain success.
 
 ## Verified offline unsigned deployment transaction drafts (22 Nov 2026)
 
@@ -107,4 +109,6 @@ All three transactions are real public blockchain testnet evidence. See [full in
 
 **Run the owner's no-custody local demo UI:** `npm ci --ignore-scripts && npm run compile && npm run compile:v2 && node deploy-ui/server.mjs`, then open `http://127.0.0.1:4177/v2.html` on the owner's computer with trusted MetaMask. The app only serves an allowlist on localhost, validates exact pinned compiled bytecode SHA-256, restricts account and testnet, and requires owner action in MetaMask for every transaction. Transaction hashes are retained in browser localStorage to avoid duplicate sends. **Do not deploy again** if you already have proof addresses; receipt evidence is in this repository. No real ETH or private key is needed.
 
-The prototype is not audited, does not assert human real-world task completion, and has no confirmed grant payment. **Next organizer deliverables:** original demo video and final existing-account DoraHacks BUIDL before 5 December 2026.
+The prototype is not audited, does not assert human real-world task completion, and has no confirmed grant payment. **Original proof video published (2m44.8s):** [Watch the accessible HTML5 demo site](https://luxedigitalnest.github.io/ldn-reactive-omni-quest-guardian/) · [Direct video MP4](https://luxedigitalnest.github.io/ldn-reactive-omni-quest-guardian/LDN_Reactive_Omni_Quest_Guardian_Proof_Demo_2026-11-22.mp4) · [GitHub Release](https://github.com/luxedigitalnest/ldn-reactive-omni-quest-guardian/releases/tag/v0.2.0-omni-proof).
+
+The actual demo is 164.759 seconds, H.264 video with AAC English male narration and synchronized captions, using genuine source-code and on-chain explorer screenshots, original script and traceable receipts. No fabricated footage or submitted prize claimed. **Next organizer deliverable:** final existing-account DoraHacks BUIDL with explicit owner acceptance of its Participant Agreement before 5 December 2026.
