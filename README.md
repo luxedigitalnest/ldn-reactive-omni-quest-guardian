@@ -1,6 +1,6 @@
 # LDN Reactive Omni Quest Guardian
 
-**Status: working, locally tested Solidity source prototype. There is NO Lasna deployment, genuine on-chain event-to-callback transaction, or judged buildathon submission yet.**
+**Status (22 November 2026): Original contracts are deployed on Ethereum Sepolia and Reactive Lasna, with independently verified receipts. The Guardian issued two genuine CallbackRequested events. Sepolia Destination was funded through the official callback proxy, but the final destination callback and judged DoraHacks submission are NOT yet verified.** See [live on-chain evidence](LIVE_ONCHAIN_PROOFS_2026-11-22.md).
 
 An original open-source, accessibility-oriented checkpoint automation experiment for [Reactive Omni Buildathon](https://dorahacks.io/hackathon/reactive-omni-buildathon) (deadline 5 December 2026), proposed for **Set It and Forget It**.
 
@@ -29,9 +29,9 @@ Use Foundry and Solidity 0.8.29.
 3. Run **forge build** and **forge test -vv**.
 4. Compare with the public GitHub Actions workflow in .github/workflows/omni-solidity-ci.yml.
 
-## Deployment plan — NOT COMPLETED
+## Original deployment checklist — contracts deployed, callback delivery outstanding
 
-1. Confirm **Base Sepolia** origin/destination (chain ID 84532) and official callback proxy from the current [supported-chains guide](https://dev.reactive.network/origins-and-destinations). Use only genuine free testnet assets.
+1. Verified **Ethereum Sepolia** for both original origin and destination (chain ID 11155111), with official Sepolia callback proxy from the [supported-chains guide](https://dev.reactive.network/origins-and-destinations). All tests use free testnet assets.
 2. Deploy QuestOrigin and QuestDestination to origin/destination using official testnet RPC. Configure destination callback proxy in its constructor.
 3. Deploy QuestGuardianReactive to **Reactive Lasna (chain ID 5318007)** with the actual origin/destination contract addresses. The subscription is registered through the Omni SYSTEM contract at 0x8888888888888888888888888888888888888888. Fund its execution reserve with testnet REACT only.
 4. Configure destination's setReactiveOnce to the deployed Reactive contract address. This is irreversible, so inspect addresses before signing.
@@ -46,7 +46,7 @@ Use Foundry and Solidity 0.8.29.
 - An announced checkpoint is not an off-chain quest-completion credential. Real-world task attestation would need a trustworthy issuer.
 - The event exposes public task metadata; this is not an anonymity system. Do not store identifying data in real events.
 - The destination uses taskId as its replay key; production multi-origin deployments must bind origin/chain identity too.
-- Reactive gas and callback reserves have separate costs; a lack of funds can halt the on-chain flow. Testnet deployment and auditing are pending.
+- Reactive gas and callback reserves have separate costs; a lack of funds can halt the on-chain flow. The original contracts are deployed on testnets, but a successful destination callback and independent security audit remain outstanding.
 - Not a financial product or a promised grant.
 
 ## Official references
@@ -58,7 +58,7 @@ Use Foundry and Solidity 0.8.29.
 
 Apache-2.0 licensed. See LICENSE.
 
-## Reproducible unsigned deployment artifacts (22 Nov 2026)
+## Reproducible unsigned deployment artifacts and executed testnet steps (22 Nov 2026)
 
 A separate local no-key compilation path is now available in `scripts/compile_artifacts.js`, pinning `solc@0.8.29` and verifying that official `lib/reactive-lib-omni` checkout is exactly `3ade0dcf1d27e67e5783ef807e73a1b9e0c0cce8`.
 
