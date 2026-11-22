@@ -1,0 +1,12 @@
+{
+  "name": "ldn-reactive-omni-quest-guardian-build",
+  "private": true,
+  "version": "0.1.0",
+  "description": "No-key reproducible Solidity compiler for the Reactive Omni demo. Does not deploy or sign.",
+  "scripts": {
+    "compile": "node scripts/compile_artifacts.js"
+  },
+  "dependencies": {
+    "solc": "0.8.29"
+  }
+}

@@ -57,3 +57,26 @@ Use Foundry and Solidity 0.8.29.
 - [Official debugging and faucet](https://dev.reactive.network/debugging)
 
 Apache-2.0 licensed. See LICENSE.
+
+## Reproducible unsigned deployment artifacts (22 Nov 2026)
+
+A separate local no-key compilation path is now available in `scripts/compile_artifacts.js`, pinning `solc@0.8.29` and verifying that official `lib/reactive-lib-omni` checkout is exactly `3ade0dcf1d27e67e5783ef807e73a1b9e0c0cce8`.
+
+```bash
+git clone --depth 1 --branch v0.1.0 https://github.com/Reactive-Network/reactive-lib-omni.git lib/reactive-lib-omni
+npm ci --ignore-scripts
+npm run compile
+```
+
+After successful compilation, `artifacts/manifest.json` and three contract ABI/bytecode JSON files are generated (gitignored to avoid confusing build artifacts with signed receipts). The original 12 Foundry CI tests remain separate. **No wallet is opened, no private key is required, and no transaction is sent by this tool.**
+
+Deployment order with **Ethereum Sepolia on BOTH origin and destination** (the official chain is supported for both):
+
+1. Fund **Lasna testnet** from the official ETH Sepolia Reactive faucet with a normal owner-approved transaction: 0.1 test ETH from 0xADFC0cb6819BC49939b021E45b0d43306575e5d3 to 0x9b9BB25f1A81078C544C829c5EB7822d747Cf434, with empty calldata and chain ID 11155111; first confirm this is testnet only. Existing simulated `eth_estimateGas` was 25,145, **not a receipt**.
+2. Wait for a verifiable Sepolia transaction and corresponding **10 TEST lREACT** on Reactive Lasna. Until then, deployment is blocked. Never resend without checking nonce and balance.
+3. On Sepolia, deploy `QuestOrigin()` then `QuestDestination(callbackProxy=0xc9f36411C9897e7F959D99ffca2a0Ba7ee0D7bDA)`, record addresses and receipts.
+4. On Lasna, deploy `QuestGuardianReactive(originChainId=11155111,originContract=<actual-origin>,destinationChainId=11155111,destinationContract=<actual-destination>)`, with funded gas/reserve; record its receipt, event subscription and callback costs.
+5. On Sepolia, call `QuestDestination.setReactiveOnce(<actual-reactive>)` carefully (one-time binding). Then call `QuestOrigin.announce(<future-UTC-timestamp>)`.
+6. Verify **three authentic chain-linked receipts**, destination `checkpointSeen(taskId)==true`, and callback evidence before recording a demo under 3 minutes and submitting the original DoraHacks build.
+
+As of 22 Nov 2026 the real wallet's Lasna balance is **0**; the only confirmed new DoraHacks action is **event registration**, not judged project submission.
