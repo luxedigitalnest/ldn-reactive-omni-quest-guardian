@@ -6,7 +6,8 @@
   "scripts": {
     "compile": "node scripts/compile_artifacts.js",
     "test:unsigned": "node --test tests/unsigned_deploy_plan.test.js",
-    "unsigned-plan": "node scripts/unsigned_deploy_plan.js"
+    "unsigned-plan": "node scripts/unsigned_deploy_plan.js",
+    "compile:v2": "node scripts/compile_v2_artifacts.js"
   },
   "dependencies": {
     "solc": "0.8.29"
