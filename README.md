@@ -1,6 +1,6 @@
 # LDN Reactive Omni Quest Guardian
 
-**Status (22 November 2026): LIVE, VERIFIED end-to-end cross-chain V2 demo on Ethereum Sepolia and Reactive Lasna: source checkpoint #4 -> real Lasna CallbackRequested -> successful Sepolia destination callback. Independent RPC checks verify `checkpointSeen(4) == true` and the destination `CheckpointMirrored(4)` event. Final judged DoraHacks submission and any award are NOT yet complete.** See [full on-chain evidence](LIVE_ONCHAIN_PROOFS_2026-11-22.md).
+**Status (22 November 2026): LIVE, VERIFIED end-to-end cross-chain V2 demo on Ethereum Sepolia and Reactive Lasna: source checkpoint #4 -> real Lasna CallbackRequested -> successful Sepolia destination callback. Independent RPC checks verify `checkpointSeen(4) == true` and the destination `CheckpointMirrored(4)` event. The original public DoraHacks BUIDL [51644](https://dorahacks.io/build/51644) and proof video are live (reverified 27 November 2026); organizer acceptance, judging and any award remain unconfirmed.** See [full on-chain evidence](LIVE_ONCHAIN_PROOFS_2026-11-22.md).
 
 An original open-source, accessibility-oriented checkpoint automation experiment for [Reactive Omni Buildathon](https://dorahacks.io/hackathon/reactive-omni-buildathon) (deadline 5 December 2026), proposed for **Set It and Forget It**.
 
@@ -39,7 +39,7 @@ Use Foundry and Solidity 0.8.29.
 6. Call announce on origin. Collect three genuine linked explorer proofs: origin event TX, Reactive TX/callback request, and destination callback TX. Verify checkpointSeen(taskId) on destination.
 7. Produce an original video under three minutes and enter the **actual** addresses, public repository and transaction hashes in DoraHacks before Dec 5.
 
-**A genuine end-to-end V2 callback is now independently verified. The final buildathon BUIDL, original video, and judging remain outstanding. Do not fabricate receipts, awards, or a submitted entry.**
+**A genuine end-to-end V2 callback, original video and public BUIDL [51644](https://dorahacks.io/build/51644) are verified. The organizer's acceptance and judging outcome remain unconfirmed. Do not redeploy or create duplicate entries.**
 
 ## Limitations and risks
 
@@ -111,4 +111,4 @@ All three transactions are real public blockchain testnet evidence. See [full in
 
 The prototype is not audited, does not assert human real-world task completion, and has no confirmed grant payment. **Original proof video published (2m44.8s):** [Watch the accessible HTML5 demo site](https://luxedigitalnest.github.io/ldn-reactive-omni-quest-guardian/) · [Direct video MP4](https://luxedigitalnest.github.io/ldn-reactive-omni-quest-guardian/LDN_Reactive_Omni_Quest_Guardian_Proof_Demo_2026-11-22.mp4) · [GitHub Release](https://github.com/luxedigitalnest/ldn-reactive-omni-quest-guardian/releases/tag/v0.2.0-omni-proof).
 
-The actual demo is 164.759 seconds, H.264 video with AAC English male narration and synchronized captions, using genuine source-code and on-chain explorer screenshots, original script and traceable receipts. No fabricated footage or submitted prize claimed. **Next organizer deliverable:** final existing-account DoraHacks BUIDL with explicit owner acceptance of its Participant Agreement before 5 December 2026.
+The actual demo is 164.759 seconds, H.264 video with AAC English male narration and synchronized captions, using genuine source-code and on-chain explorer screenshots, original script and traceable receipts. No fabricated footage or submitted prize claimed. **27 November status:** the [original BUIDL 51644](https://dorahacks.io/build/51644) publicly displays the same project, repository, original proof video and testnet evidence. The event deadline remains 5 December 2026. A public BUIDL does not by itself establish event acceptance or judging; confirm the organizer's status in the existing account and amend that entry only if requested. No grant or prize has been verified.
