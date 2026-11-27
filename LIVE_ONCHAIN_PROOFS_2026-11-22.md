@@ -14,7 +14,7 @@
 | Genuine source checkpoint ID 2 | Sepolia | [0x3d2e944a…](https://sepolia.etherscan.io/tx/0x3d2e944ab17c530e1c2466566be622f47e173e12662827b6d491b256eea1a04a) | SUCCESS, emitted genuine `CheckpointAnnounced(2, wallet, deadline)`, block 12189607 |
 | Destination callback fee reserve via official proxy | Sepolia | [0x13232bbd…](https://sepolia.etherscan.io/tx/0x13232bbd84504e7c799010c8e076f8bf9fa5b9405cd46e6fb795164274954737) | SUCCESS; proxy `depositTo(QuestDestination)` credited 0.1 Sepolia test ETH, block 12189636; `debt=0` |
 
-## Verified reactive processing, not yet delivered
+## Historical V1 reactive processing, not delivered (superseded by V2)
 
 Original Lasna source-event reactions were confirmed:
 - [Reactive tx for checkpoint 1](https://lasna.reactscan.net/tx/0x7dece269167216c4b74b2257eb118293c303c2f4cba5b7e1cc50fbb21e1f40a9), real Guardian `CallbackRequested` event, Lasna block 8984214
@@ -28,7 +28,7 @@ Original Lasna source-event reactions were confirmed:
 
 The locally restricted address `http://127.0.0.1:4177/` loads `deploy-ui/index.html` and `deploy-ui/app.mjs`. It verifies the pinned build artifacts through SHA-256, checks the expected owner account and testnet chain, requires explicit user interactions for each transaction, and stores public transaction hashes locally to prevent duplicates. The `deploy-ui/server.mjs` server listens to `127.0.0.1` only and serves a fixed file allowlist. No wallet keys or credentials are stored in the repository.
 
-## What still remains before a judged final submission
+## Historical V1 remediation checklist (superseded by V2 and submission update below)
 
 1. Verify any post-funding `CheckpointAnnounced` receipt and event if the owner signed it; check actual task ID and deadline.
 2. Follow that source event through Lasna SYSTEM `trigger`, `CallbackRequested`, `getCallbacks(uint256)`, and an authentic destination-chain proxy callback receipt.
@@ -73,6 +73,6 @@ V2 uses **the current live official Sepolia proxy** `0xAa14d9Cd0f788Ca23d1180598
 
 **Test suite:** Original 12 Foundry tests and new corrected V2 test suite passed in GitHub Actions [run 45040324902](https://github.com/luxedigitalnest/ldn-reactive-omni-quest-guardian/actions/runs/45040324902). Local pinned Solidity 0.8.29 compilation and original unsigned contract checks also passed.
 
-**Remaining user-facing submission obligation (NOT YET DONE at time of documentation):** produce an original, truthful demonstration video showing these live receipts and submit a genuine BUIDL through the *already registered* DoraHacks Reactive Omni Buildathon account by **December 5, 2026**. Neither prize nor final judged submission is guaranteed by merely showing working contracts.
+**Submission status update (27 November 2026):** The original [proof video (164.759 seconds)](https://luxedigitalnest.github.io/ldn-reactive-omni-quest-guardian/) and [DoraHacks BUIDL 51644](https://dorahacks.io/build/51644) have been submitted. The authenticated event Manage Build submission panel was rechecked on 27 November and lists LDN Reactive Omni Quest Guardian in the Set It and Forget It track. Organizer acceptance, judging and any prize remain unconfirmed. The deadline is December 5, 2026 at 20:00 UTC. Do not duplicate the entry or deployments.
 
 **Testnet only.** All transactions were individually reviewed and approved by the owner in their wallet. No real ETH or mainnet payments, secret keys, wallets handed to an agent, or on-chain claims of actual human task completion.
